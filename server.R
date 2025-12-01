@@ -22,6 +22,7 @@
   
   # Upload the main ASV table
   MainDataFileUpload <- reactive({
+    
     read.table(
       file = input$MainFile$datapath,
       fill = TRUE,
@@ -45,7 +46,12 @@
         h3("This is your main ASV table")
       )
     })
-    head(Table, 3)
+    datatable(
+      Table,
+      options = list(
+        pageLength = 3  # Only shows 6 rows per page by default
+      )
+    )
   })
   
   # Upload the main metadata table
@@ -73,7 +79,12 @@
         h3("This is your metadata")
       )
     })
-    head(Table, 6)
+    datatable(
+      Table,
+      options = list(
+        pageLength = 3  # Only shows 6 rows per page by default
+      )
+    )
   })
   
   # Upload the optional ASV list file
@@ -102,7 +113,12 @@
         h3("This is your contaminant list")
       )
     })
-    head(Table, 6)
+    datatable(
+      Table,
+      options = list(
+        pageLength = 3  # Only shows 6 rows per page by default
+      )
+    )
   })
   
 # ---- Data pre processing ----
@@ -111,6 +127,7 @@
   
   # Start by removing samples in the ASV table that are not present in the metadata tables
   MainASVTable <- reactive({
+    
     ASVTable <- MainDataFileUpload()
     MetaTable <- MetaDataFileUpload()
     
@@ -132,6 +149,7 @@
   
   # Now remove metadata columns associated with samples that are not present in the ASV table
   MainMetaTable <- reactive({
+    
     ASVTable <- MainDataFileUpload()
     MetaTable <- MetaDataFileUpload()
     
@@ -161,6 +179,7 @@
   
   # The first requirement is to format taxonomically collapsed tables, if directed to do so
   TransDataCollapsed <- reactive({
+    
     req(input$MainFile)
     req(input$MetaFile)
     ASVTable <- MainASVTable()
@@ -184,6 +203,7 @@
   # should be modified so that everything is consistent.
   FeatureDataKey <- reactive({
     
+
     
     ASVTable <- TransDataCollapsed()
     
@@ -263,7 +283,10 @@
                       "Consensus.Lineage",
                       "ReprSequence"
                       )
-    ASVTable <- ASVTable[,!(names(ASVTable) %in% ColsToFilter)]
+    
+    ExistingCols <- intersect(ColsToFilter, names(ASVTable))
+    ASVTable <- ASVTable %>% select(-all_of(ExistingCols)) ## maintain dataframe formatting
+    # ASVTable <- ASVTable[,!(names(ASVTable) %in% ColsToFilter)]
     
     # Set all reads below a threshold as 0; any taxa with zero reads will be removed downstream
     if (input$RemoveLowReads == TRUE) {
@@ -1767,7 +1790,7 @@
   
   # Fit the environment variables to the PCoA coordinates
   PEnvFit <- reactive({
-    
+
     req(input$PStartButton)
     Pcoa <- PPcoa()
     MetaData <- PMetaFilt()
