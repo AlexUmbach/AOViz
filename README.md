@@ -22,8 +22,9 @@ AOViz produces four main plots: a sequencing depth plot, a taxonomic bar plot, a
 
 
 # Read plot (bar and box)
-![read_plot_bar_example](https://github.com/AlexUmbach/AOViz/assets/56092913/03e1096a-39ac-44a1-a8f2-b1eec417008b)
-![read_plot_box_example](https://github.com/AlexUmbach/AOViz/assets/56092913/64021541-698e-452f-b9d0-767c1ca26089)
+<img width="288" height="384" alt="read_plot_box_example" src="https://github.com/user-attachments/assets/eceb91dc-94be-420a-b236-d4b5e9c65a8a" />
+<img width="768" height="384" alt="read_plot_bar_example" src="https://github.com/user-attachments/assets/04d68fbc-9a85-4dc5-8ebc-78aa97fca9cf" />
+
 
 # Taxonomy bar plot (class)
 ![taxa_barplot_example](https://github.com/user-attachments/assets/cb6d8488-b63c-4b1f-ab24-31b6b8c55e1f)
@@ -35,4 +36,5 @@ AOViz produces four main plots: a sequencing depth plot, a taxonomic bar plot, a
 
 # Bray-Curtis and UniFrac triplot. 
 For this plot, arrows represent numeric medata fit to the PCoA coordinates. These arrows are associated with p-values and R2 values (contained within a stats table available for download). Taxonomic relative abundance information is also mapped to PCoA data and shown in ordination space. Also available in UniFrac if provided a tree in newick format (output from QIIME2). 
-![braycurtis_triplot_example](https://github.com/AlexUmbach/AOViz/assets/56092913/d0627b17-48ae-40dc-b6b6-41b96e659dfe)
+<img width="768" height="576" alt="braycurtis_triplot_example" src="https://github.com/user-attachments/assets/782aca1d-f7e4-4467-a05d-8cb04e698024" />
+
