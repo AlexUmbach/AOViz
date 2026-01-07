@@ -14,8 +14,7 @@ Users require two files: an ASV table and an associated metadata table, both in 
 
 
 <b>Metadata table</b>
-
-![meta_example](https://github.com/AlexUmbach/AOViz/assets/56092913/92f7a906-9470-4a62-9d37-ee022e306062)
+<img width="740" height="220" alt="MetaExample" src="https://github.com/user-attachments/assets/492ac8e8-f56b-465b-8b49-6bbf80ff256a" />
 
 # Example figures
 AOViz produces four main plots: a sequencing depth plot, a taxonomic bar plot, a relative abundance bubble plot, and a PCoA triplot. These four plots are contained within seprate RShiny tabs and run independent of each other. Descriptions of these plots are produces are contained in their respective tabs. For each tab, there is an option to download the figure and associated data tables, as well as statistics when applicable (i.e., triplot). The examples below are directly out of AOViz
