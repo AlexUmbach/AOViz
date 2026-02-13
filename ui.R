@@ -41,86 +41,13 @@ Any phylogenetic marker gene can be used (e.g., cpn60, amoA) so long as the taxo
 
 
 ## This is some custom HTML settings for colour, background, textsize, and whatnot:
-ui <- navbarPage(id = "navbarID",
-                 setBackgroundColor(color = "#E7E7E7"),
-                 # setBackgroundColor(color = "#E7E7E7"),
-                 tags$style(HTML("
-                                 
-        .navbar-default .navbar-brand {
-        color:white;
-        font-size:28px
-        }
-        
-        .navbar-default .navbar-brand:hover {
-        color:white;
-        }
-        
-        .navbar {
-        background-color:#3C8DBC;
-        }
-        
-        .navbar-default .navbar-nav > li > a {
-        color:white;
-        font-size:22px;
-        black
-        }
-        
-        .navbar-default .navbar-nav > .active > a,
-        
-        .navbar-default .navbar-nav > .active > a:focus,
-        
-        .navbar-default .navbar-nav > .active > a:hover {
-        color:black;
-        background-color:white;
-        }
-        .navbar-default .navbar-nav > li > a:hover {
-        color:black;
-        background-color:white;
-        text-decoration
-        }
-        
-        .well {
-        background:white;
-        }
-        
-        body {
-        background-color:white;
-        }
-        
-        #MetaTableOut {
-          zoom: 0.80;
-        }
-        
-        #MainTableOut {
-          zoom: 0.80;
-        }
-        
-        #ContamTableOut {
-          zoom: 0.80;
-        }
-        
-        #FinalProcessedTable {
-          zoom: 0.80; nowrap;
-        }
-        
-        #ReadTableOut {
-          zoom: 0.80; nowrap;
-        }
-        
-        #BarTableOut {
-          zoom: 0.80;
-        }
-        
-        #BubbleTableOut {
-          zoom: 0.80;
-        }
-        
-                                 ")),
-                 
-                 title = "AOViz v3.0",
-                 
-                 #title = img(src="ALEXIOME_logo.png", height = "100%", width = "100%"),
-                 
+ui <- navbarPage(
+  id = "navbarID",
+  title = "AOViz",
+  header = tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
+  ),
+
                  #### Main Page ####
                  tabPanel("WELCOME",
                           sidebarLayout(
