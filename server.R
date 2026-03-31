@@ -2044,7 +2044,7 @@
                         isolate(input$PTaxaThresh),
                         "% relative abundance",
                         "\n",
-                        paste0("Axis1(",
+                        paste0("Axis2(",
                                round(Eigen$Axis2,1),"%)")))
   
       # Plot PCoA
@@ -2593,7 +2593,7 @@
                       isolate(input$UniTaxaThresh),
                       "% relative abundance",
                       "\n",
-                      paste0("Axis1(",
+                      paste0("Axis2(",
                              round(Eigen$Axis2,1),"%)")))
     
     # Plot PCoA

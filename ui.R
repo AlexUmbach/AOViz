@@ -43,20 +43,27 @@ Any phylogenetic marker gene can be used (e.g., cpn60, amoA) so long as the taxo
 ## This is some custom HTML settings for colour, background, textsize, and whatnot:
 ui <- navbarPage(
   id = "navbarID",
-  title = "AOViz",
+  title = HTML(
+    paste0(
+      "AOViz ",
+      "<span style='font-size:8px; color:white;'>(",
+      R.version$version.string,
+      ")</span>"
+    )
+  ),
   header = tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
   ),
 
                  #### Main Page ####
                  tabPanel("WELCOME",
-                          sidebarLayout(
-                            sidebarPanel(Rversion,
-                                         p("Leave any comments or suggestions on", a("the git page", href = "https://github.com/AlexUmbach/AOViz")),
-                                         img(src="MainLogo.svg", height = "100%", width = "100%"),
-                                         style = "height: 500px; position:relative; border-color:#000000",
-                                         width = 3
-                            ),
+                          # sidebarLayout(
+                          #   sidebarPanel(Rversion,
+                          #                p("Leave any comments or suggestions on", a("the git page", href = "https://github.com/AlexUmbach/AOViz")),
+                          #                img(src="MainLogo.svg", height = "100%", width = "100%"),
+                          #                style = "height: 500px; position:relative; border-color:#000000",
+                          #                width = 3
+                          #   ),
                             mainPanel(width = 9,
                                       fluidRow(
                                         box(h1("Welcome to AOViz!"),
@@ -107,8 +114,8 @@ ui <- navbarPage(
                                       )
                                       
                             )
-                          )
-                 ),
+                          ),
+                 # ), # Add the sidepanel back in
                  
                  
                  
