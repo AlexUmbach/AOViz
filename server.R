@@ -1677,17 +1677,20 @@
     if (input$PRarefyData == TRUE){
     SrsTable <- SRS(SrsTable, Cmin = SrsDepth, seed = 123)
     rownames(SrsTable) <- FeatureKey$FeatureID
+    SrsTable <- SrsTable[, colSums(SrsTable, na.rm = TRUE) != 0]
     SrsTable
     }
     
     else if (input$PRarefyData == FALSE){
       rownames(SrsTable) <- FeatureKey$FeatureID
+      SrsTable <- SrsTable[, colSums(SrsTable, na.rm = TRUE) != 0]
       SrsTable
     }
   })
   
   # Generate a proportion table
   PPropTable <- reactive({
+    
     
     req(input$PStartButton)
     
@@ -1707,14 +1710,19 @@
       Matches <- intersect(rownames(SrsPropTable),rownames(Contams))
       SrsPropTable <- SrsPropTable[Matches, ]
       
+      # Remove samples with no reads
+      SrsPropTable <- SrsPropTable[, colSums(SrsPropTable, na.rm = TRUE) != 0]
       SrsPropTable
-      
     }
+    # Check for NaNs resulting from zero-read samples
+    SrsPropTable <- SrsPropTable[, colSums(SrsPropTable, na.rm = TRUE) != 0]
     SrsPropTable
+    
   })
   
   #Generate the distance matrix table
   PPDistance <- reactive({
+    
     
     req(input$PStartButton)
     PPropTable <- PPropTable()
@@ -1734,6 +1742,7 @@
   
   # Generate the PCoA plot
   PPcoa <- reactive({
+    
     
     req(input$PStartButton)
     BrayCurtis <- PPDistance()
@@ -1773,6 +1782,7 @@
   # Filter the metadata for missing samples after SRS rarefaction
   PMetaFilt <- reactive({
     
+    
     req(input$PStartButton)
     Pcoa <- PPcoa()
     MetaData <- MainMetaTable()
@@ -1790,6 +1800,7 @@
   
   # Fit the environment variables to the PCoA coordinates
   PEnvFit <- reactive({
+    
 
     req(input$PStartButton)
     Pcoa <- PPcoa()
@@ -2151,10 +2162,12 @@
     if(input$UniRarefyData == TRUE){
     SrsTable <- SRS(ASVTable, Cmin = isolate(input$UniDepth), seed = 123)
     rownames(SrsTable) <- FeatureKey$FeatureID
+    SrsTable <- SrsTable[, colSums(SrsTable, na.rm = TRUE) != 0]
     SrsTable
     }
     else if (input$UniRarefyData == FALSE){
       rownames(ASVTable) <- FeatureKey$FeatureID
+      ASVTable <- ASVTable[, colSums(ASVTable, na.rm = TRUE) != 0]
       ASVTable
     }
   })
@@ -2173,12 +2186,13 @@
       Contams <- MainContamTable()
       Matches <- intersect(rownames(SrsPropTable),rownames(Contams))
       SrsPropTable <- SrsPropTable[Matches, ]
-      
+      SrsPropTable <- SrsPropTable[, colSums(SrsPropTable, na.rm = TRUE) != 0]
       SrsPropTable
       
     }
-    
+    SrsPropTable <- SrsPropTable[, colSums(SrsPropTable, na.rm = TRUE) != 0]
     SrsPropTable
+    
     
   })
   
