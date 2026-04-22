@@ -479,7 +479,7 @@
             vjust = 0.5,
             size = 12
           ),
-          legend.text = element_text(face = "italic", size = 12),
+          legend.text = element_text(size = 12),
           legend.title = element_text(size = 14),
           panel.spacing = unit(as.numeric(input$ReadPanelSpacing), "points"),
           #legend.position = "none",
@@ -503,7 +503,7 @@
             vjust = 0.5,
             size = 12
           ),
-          legend.text = element_text(face = "italic", size = 12),
+          legend.text = element_text(size = 12),
           legend.title = element_text(size = 14),
           panel.border = element_blank(),
           panel.spacing = unit(as.numeric(input$ReadPanelSpacing), "points"),
@@ -1508,7 +1508,7 @@
         axis.text = element_text(colour = "black", size = 12),
         axis.text.x = element_blank(),
         axis.ticks.x = element_blank(),
-        legend.text = element_text(face = "italic", size = 12),
+        legend.text = element_text(face = "plain", size = 12),
         legend.title = element_text(size = 10),
         panel.spacing = unit(as.numeric(input$BubblePanelSpacing), "points"),
         # legend.position = "none",
@@ -2035,7 +2035,7 @@
             face = "plain"
           ),
           axis.text.y.left = element_text(size = 14, face = "plain"),
-          legend.text = element_text(face = "italic", size = 16),
+          legend.text = element_text(size = 16),
           legend.title = element_text(size = 16),
           axis.title = element_text(size = 16, face = NULL),
           axis.text.y = element_text(size = 14),
@@ -2460,8 +2460,8 @@
           fill = get(input$UniFilCol))) + 
         
         labs (
-          x = paste0("Axis1","(",round(Eigen$Axis1,2),"%",")"),
-          y = paste0("Axis2","(",round(Eigen$Axis2,2),"%",")"),
+          x = paste0("Axis1","(",round(Eigen$Axis1,1),"%",")"),
+          y = paste0("Axis2","(",round(Eigen$Axis2,1),"%",")"),
           fill = input$UniFilCol,
           colour = input$UniFilCol,
           shape = input$UniShape
@@ -2488,8 +2488,8 @@
           fill = !!sym(input$UniFilCol)
         )) + 
         labs (
-          x = paste0("Axis1","(",round(Eigen$Axis1,2),"%",")"),
-          y = paste0("Axis2","(",round(Eigen$Axis2,2),"%",")"),
+          x = paste0("Axis1","(",round(Eigen$Axis1,1),"%",")"),
+          y = paste0("Axis2","(",round(Eigen$Axis2,1),"%",")"),
         # labs(x = paste0(
         #   c("Axis1","(",round(Eigen$Axis1,1),"%)")),
         #   y = paste0(
@@ -2587,7 +2587,7 @@
           face = "plain"
         ),
         axis.text.y.left = element_text(size = 14, face = "plain"),
-        legend.text = element_text(face = "italic", size = 16),
+        legend.text = element_text(size = 16),
         legend.title = element_text(size = 16),
         axis.title = element_text(size = 16, face = NULL),
         axis.text.y = element_text(size = 14),
@@ -3225,7 +3225,7 @@
           face = "plain"
         ),
         axis.text.y.left = element_text(size = 14, face = "plain"),
-        legend.text = element_text(face = "italic", size = 16),
+        legend.text = element_text(size = 16),
         legend.title = element_text(size = 16),
         axis.title = element_text(size = 16, face = NULL),
         axis.text.y = element_text(size = 14),
