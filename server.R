@@ -127,6 +127,7 @@
   
   # Start by removing samples in the ASV table that are not present in the metadata tables
   MainASVTable <- reactive({
+    #browser()
     
     ASVTable <- MainDataFileUpload()
     MetaTable <- MetaDataFileUpload()
@@ -149,6 +150,7 @@
   
   # Now remove metadata columns associated with samples that are not present in the ASV table
   MainMetaTable <- reactive({
+    #browser()
     
     ASVTable <- MainDataFileUpload()
     MetaTable <- MetaDataFileUpload()
@@ -169,6 +171,8 @@
   
   # The main contaminant table
   MainContamTable <- reactive({
+    #browser()
+    
     Table <- ContamDataFileUpload()
     rownames(Table) <- Table$Feature.ID
     Table
@@ -179,6 +183,7 @@
   
   # The first requirement is to format taxonomically collapsed tables, if directed to do so
   TransDataCollapsed <- reactive({
+    #browser()
     
     req(input$MainFile)
     req(input$MetaFile)
@@ -202,6 +207,7 @@
   # properly associated with samples. This is the only location in which taxonomic identifiers, labels, or otherwise 
   # should be modified so that everything is consistent.
   FeatureDataKey <- reactive({
+    #browser()
     
 
     
@@ -275,6 +281,8 @@
   # Generate a table containing only count data, using the FeatureIDs as rownames to track data
   # Also remove low-abundance sequences, if so desired
   FilteredTable <- reactive({
+    #browser()
+    
     ASVTable <- MainASVTable()
     
     ColsToFilter <- c("OTU.ID",
@@ -343,6 +351,8 @@
   # Now we transform the raw ASV counts into totals
   ReadCountsTotal <- reactive({
     
+    #browser()
+    
     req(input$ReadStartButton)
     ASVTable <- FilteredTable()
     MetaData <- MainMetaTable()
@@ -358,10 +368,10 @@
     }
     
     # Sum each column and add a total, then select only that row
-    ASVTable <- rbind(ASVTable, Total = colSums(ASVTable))
-    ReadTotal <- ASVTable["Total", ]
+    ASVTable <- rbind(ASVTable, Total = colSums(ASVTable, na.rm = TRUE))
+    ReadTotal <- ASVTable["Total", , drop = FALSE]
     
-    # Now convert to long form
+    # Now convert to long form. This is supposed to 
     ReadTotal <- reshape2::melt(ReadTotal, 
                                       variable.name = as.character("SampleName"), 
                                       value.name = "Total")
@@ -390,6 +400,7 @@
   
   # Generate the read plot
   ReadPlotVisual <- reactive({
+    #browser()
     
     req(input$ReadStartButton)
     ReadCounts <- ReadCountsTotal()
@@ -585,6 +596,7 @@
   
   # Generate the dataframe necessary for plotting
   BarPlotDataTran <- reactive({
+    #browser()
     
     req(input$BarStartButton)
     ASVTable <- FilteredTable()
@@ -596,7 +608,7 @@
     
     # Remove columns with zero total counts, then filter the table using a given user-defined cut-off. If any sample contains 
     # taxa with a proportion greater than a cut-off, that taxon is retained in all samples
-    BarProp <- BarProp[, colSums(is.na(BarProp)) == 0]
+    BarProp <- BarProp[, colSums(is.na(BarProp)) == 0, drop = FALSE]
     BarProp <- BarProp %>% filter_all(any_vars(. >= as.numeric(isolate(input$BarCutOff))))
     
     # Reassign taxonomy to the filtered table using the rownames and FeatureDataKey reactive file
@@ -608,7 +620,7 @@
     if (input$ContamChoice == "Analyze"){
       Contams <- MainContamTable()
       Matches <- intersect(rownames(BarProp),rownames(Contams))
-      BarProp <- BarProp[Matches, ]
+      BarProp <- BarProp[Matches, drop = FALSE]
       BarProp
   
     }
@@ -618,6 +630,7 @@
   
   # Generate a long form dataframe; keep for output
   BarPlotDataLong <- reactive({
+    #browser()
 
     req(input$BarStartButton)
     BarTable <- BarPlotDataTran()
@@ -909,6 +922,7 @@
   
   # We must regenerate the proportion tables and associated data
   BubbleDataTran <- reactive({
+    #browser()
     
     req(input$BubbleStartButton)
     BubbleTable <- FilteredTable()
@@ -919,7 +933,7 @@
     BubbleProp <- as.data.frame(BubbleProp)
     
     # Remove zeros and filter based on a user-defined cut-off
-    BubbleProp <- BubbleProp[, colSums(is.na(BubbleProp)) == 0]
+    BubbleProp <- BubbleProp[, colSums(is.na(BubbleProp)) == 0, drop = FALSE]
     BubblePropFilt <- BubbleProp %>% filter_all(any_vars(. >= as.numeric(isolate(input$BubbleAbundThresh))))
     
     # Reinsert FeatureKey information
@@ -942,6 +956,7 @@
   
   # Create a long form dataframe
   BubbleDataLong <- reactive({
+    #browser()
     
     
     req(input$BubbleStartButton)
@@ -1092,7 +1107,7 @@
       })
       
       # Subset the data_long_bubble dataset based on sample_hits
-      BubbleTable <- BubbleTable[SampleHits, ]
+      BubbleTable <- BubbleTable[SampleHits, drop = FALSE]
       
       # Display a warning message indicating metadata filtering is selected
       warning("Metadata filtering selected.")
@@ -1100,11 +1115,18 @@
     
     
     # Set taxonomy as factors so that the plot colours correctly, otherwise it isn't a gradient and repeats
-    BubbleTable <-
-      BubbleTable[with(BubbleTable,
-                       order(eval(parse(
-                              text = input$BubbleTaxSort
-                            )), Taxon, decreasing = TRUE)), ]
+    BubbleTable <- BubbleTable[
+      with(
+        BubbleTable,
+        order(
+          eval(parse(text = input$BubbleTaxSort)),
+          Taxon,
+          decreasing = TRUE
+        )
+      ),
+      ,
+      drop = FALSE
+    ]
     BubbleTable$Taxon <- as.character(BubbleTable$Taxon)
     BubbleTable$Taxon <- factor(BubbleTable$Taxon,
                                 levels = unique(BubbleTable$Taxon))
@@ -1460,6 +1482,7 @@
   # of changes to added/removed taxa through filtering, and are only removed when their respecitve samples are filtered.
   
   BubbleReadVisual <- reactive({
+    #browser()
     
     req(input$BubbleStartButton)
     ASVTable <- FilteredTable()
@@ -1468,7 +1491,7 @@
     
     # Tally reads and add metadata
     FeatureCounts <- rbind(ASVTable, Total = colSums(ASVTable))
-    FeatureCounts <- FeatureCounts["Total", ]
+    FeatureCounts <- FeatureCounts["Total", , drop = FALSE]
     FeatureCounts <- reshape2::melt(FeatureCounts,
                                     variable.name = as.character("SampleName"),
                                     value.name = "Total"
@@ -1767,6 +1790,7 @@
   
   #Isolate the relative corrected eigen values
   PEigenValues <- reactive({
+    #browser()
     
     req(input$PStartButton)
     PPcoa <- PPcoa()
@@ -1850,7 +1874,6 @@
     # Use the wascores function to calculate weighted average scores 
     TaxonWeightedScores <- wascores(Pcoa$vectors[, 1:3], TSrsProp)
 
-    
     # Remove NA values
     TaxonWeightedScores[is.na(TaxonWeightedScores)] <- 0
     
