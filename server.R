@@ -1092,7 +1092,7 @@
     }
     
     # Filter samples based on metadata categories
-    if (is.na(isolate(input$BubbleMetaFilt))) {
+    if (!is.na(isolate(input$BubbleMetaFilt))) {
       warning("No metadata category selected. Script will continue without filtering by groups.")
     } else {
       # Split the isolate(input$BubbleMetaKeywords) into a list of keywords using ","
@@ -1576,6 +1576,8 @@
 # ---- Bubble Taxon Proportion Plot ----
   # An option plot that calculates the proportion of taxa among all samples in the dataset. Pretty niche use case
   BubbleTaxonVisual <- reactive({
+    
+    
     
     req(input$BubbleStartButton)
     
