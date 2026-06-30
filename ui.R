@@ -364,8 +364,8 @@ ui <- navbarPage(
                               
                               
                               fluidRow(
-                                column(6,numericInput("BubblePlotOutW",label = "Plot width",value = 600)),
-                                column(6,numericInput("BubblePlotOutH",label = "Plot height",value = 400)),
+                                column(6,numericInput("BubblePlotOutW",label = "Plot width",value = 1200)),
+                                column(6,numericInput("BubblePlotOutH",label = "Plot height",value = 1000)),
                               ),
                               fluidRow(
                                 column(6, downloadButton("BubblePlotDownload","Save figure", style = "width: 100%;")),
