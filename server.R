@@ -1056,8 +1056,13 @@
         TaxonHits <- grepl(
           pattern = pattern,
           ignore.case = TRUE,
-          x = BubbleTable$OriginalTaxonomy
-        )
+          x = BubbleTable$Taxon
+        ) |
+          grepl(
+            pattern = pattern,
+            ignore.case = TRUE,
+            x = BubbleTable$OriginalTaxonomy
+          )
         
         # Subset the data_long_bubble dataset based on TaxonHits
         BubbleTable <- BubbleTable[TaxonHits, ]
@@ -1925,6 +1930,32 @@
       AvailColours <- 2:27
       AvailFill <- 2:27
       
+      #If the user does not select shapes
+      if ((input$PShapeChoice) == FALSE){
+        
+        PPlot <- ggplot(data = Pcoa, aes(x = PCoA1, y = PCoA2)) +
+          geom_point(size = input$PSizeSelect, aes(
+            colour = get(input$PFillCol),
+            fill = get(input$PFillCol)
+          )) + 
+          
+          labs(x = paste0("Axis1(",round(Eigen$Axis1,1),"%)"),
+               y = paste0("Axis2(",round(Eigen$Axis2,1),"%)"),
+               
+               fill = input$PFillCol,
+               colour = input$PFillCol,
+               shape = input$PShape
+          )
+        
+        ## If colour gradient is selected
+        if (input$PGradient == TRUE){
+          PPlot <- PPlot + scale_colour_viridis(option = input$PPalletSelect,discrete = FALSE, direction = -1)
+          PPlot <- PPlot + scale_fill_viridis(option = input$PPalletSelect,discrete = FALSE, direction = -1)
+        } else {
+          PPlot <- PPlot + scale_fill_manual(values = AvailFill) +
+            scale_colour_manual(values = AvailFill)
+        }
+      }
       
       
       #If the user selects shape options
@@ -1945,38 +1976,11 @@
           
           scale_shape_manual(values = AvailShapes)
         
-        # Uses a colour gradient if selected
+        # Uses a colour gradient if selected. First check if the data is numeric:
 
         if (input$PGradient == TRUE){
-          PPlot <- PPlot + scale_colour_viridis(option = input$PPalletSelect,discrete = TRUE, direction = -1)
-          PPlot <- PPlot + scale_fill_viridis(option = input$PPalletSelect,discrete = TRUE, direction = -1)
-        } else {
-          PPlot <- PPlot + scale_fill_manual(values = AvailFill) +
-            scale_colour_manual(values = AvailFill)
-        }
-      }
-      
-      #If the user does not select shapes
-      if ((input$PShapeChoice) == FALSE){
-        
-        PPlot <- ggplot(data = Pcoa, aes(x = PCoA1, y = PCoA2)) +
-          geom_point(size = input$PSizeSelect, aes(
-            colour = !!sym(input$PFillCol),
-            fill = !!sym(input$PFillCol)
-          )) + 
-          
-          labs(x = paste0("Axis1(",round(Eigen$Axis1,1),"%)"),
-               y = paste0("Axis2(",round(Eigen$Axis2,1),"%)"),
-          
-          fill = input$PFillCol,
-          colour = input$PFillCol,
-          shape = input$PShape
-        )
-        
-        ## If colou r gradient is selected
-        if (input$PGradient == TRUE){
-          PPlot <- PPlot + scale_colour_viridis(option = input$PPalletSelect,discrete = TRUE, direction = -1)
-          PPlot <- PPlot + scale_fill_viridis(option = input$PPalletSelect,discrete = TRUE, direction = -1)
+          PPlot <- PPlot + scale_colour_viridis(option = input$PPalletSelect, discrete = TRUE, direction = -1)
+          PPlot <- PPlot + scale_fill_viridis(option = input$PPalletSelect, discrete = TRUE, direction = -1)
         } else {
           PPlot <- PPlot + scale_fill_manual(values = AvailFill) +
             scale_colour_manual(values = AvailFill)
